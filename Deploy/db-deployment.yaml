@@ -1,23 +1,23 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mlbrFtPrnts-mysql
+  name: mlbr-ft-prnts-mysql
   labels:
-    app: mlbrFtPrnts
+    app: mlbr-ft-prnts
 spec:
   ports:
     - port: 3306
   selector:
-    app: mlbrFtPrnts
+    app: mlbr-ft-prnts
     tier: mysql
   clusterIP: None
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mlbrFtPrntsDb-pv-claim
+  name: mlbr-ft-prnts-db-pv-claim
   labels:
-    app: mlbrFtPrnts
+    app: mlbr-ft-prnts
 spec:
   accessModes:
     - ReadWriteOnce
@@ -25,23 +25,27 @@ spec:
     requests:
       storage: 20Gi
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mlbrFtPrnts-mysql
+  name: mlbr-ft-prnts-mysql
   labels:
-    app: mlbrFtPrnts
+    app: mlbr-ft-prnts
 spec:
+  selector:
+    matchLabels:
+      app: mlbr-ft-prnts
+      tier: mysql
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: mlbrFtPrnts
+        app: mlbr-ft-prnts
         tier: mysql
     spec:
       containers:
-      - image: mysql:8.0.11
+      - image: mysql:5.6
         name: mysql
         env:
           # $ kubectl create secret generic mysql-pass --from-file=password.txt
@@ -60,4 +64,4 @@ spec:
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
-          claimName: mysql-pv-claim
+          claimName: mlbr-ft-prnts-db-pv-claim

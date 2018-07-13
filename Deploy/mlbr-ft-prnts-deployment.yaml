@@ -1,23 +1,23 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mlbrFtPrnts
+  name: mlbr-ft-prnts
   labels:
-    app: mlbrFtPrnts
+    app: mlbr-ft-prnts
 spec:
   ports:
     - port: 80
   selector:
-    app: mlbrFtPrnts
+    app: mlbr-ft-prnts
     tier: frontend
-  type: NodePort
+  type: LoadBalancer
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: wp-pv-claim
+  name: mlbr-ft-prnts-pv-claim
   labels:
-    app: mlbrFtPrnts
+    app: mlbr-ft-prnts
 spec:
   accessModes:
     - ReadWriteOnce
@@ -25,27 +25,31 @@ spec:
     requests:
       storage: 20Gi
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mlbrFtPrnts
+  name: mlbr-ft-prnts
   labels:
-    app: mlbrFtPrnts
+    app: mlbr-ft-prnts
 spec:
+  selector:
+    matchLabels:
+      app: mlbr-ft-prnts
+      tier: frontend
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: mlbrFtPrnts
+        app: mlbr-ft-prnts
         tier: frontend
     spec:
       containers:
-      - image: wordpress:4.9.7-apache
-        name: mlbrFtPrnts
+      - image: wordpress:4.8-apache
+        name: mlbr-ft-prnts
         env:
         - name: WORDPRESS_DB_HOST
-          value: wordpress-mysql
+          value: mlbr-ft-prnts-mysql
         - name: WORDPRESS_DB_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -53,11 +57,11 @@ spec:
               key: password.txt
         ports:
         - containerPort: 80
-          name: mlbrFtPrnts
+          name: mlbr-ft-prnts
         volumeMounts:
-        - name: mlbrFtPrnts-persistent-storage
+        - name: mlbr-ft-prnts-persistent-storage
           mountPath: /var/www/html
       volumes:
-      - name: mlbrFtPrnts-persistent-storage
+      - name: mlbr-ft-prnts-persistent-storage
         persistentVolumeClaim:
-          claimName: wp-pv-claim
+          claimName: mlbr-ft-prnts-pv-claim

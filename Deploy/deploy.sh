@@ -8,4 +8,4 @@ kubectl create secret generic mysql-pass --from-file=password.txt
 kubectl create -f ./db-deployment.yaml
 
 # Create WordPress deployment
-kubectl create -f ./mlbrFtPrnts-deployment.yaml
+kubectl create -f ./mlbr-ft-prnts-deployment.yaml
