@@ -1,3 +1,6 @@
+# Create namespace
+#kubectl create -f mlbr-ft-prnts-namespace.yaml
+
 # Create local volumes for MySQL
 kubectl create -f local-volumes.yaml
 

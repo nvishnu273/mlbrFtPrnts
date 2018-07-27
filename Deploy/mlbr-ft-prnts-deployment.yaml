@@ -10,7 +10,7 @@ spec:
   selector:
     app: mlbr-ft-prnts
     tier: frontend
-  type: LoadBalancer
+  type: NodePort
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
