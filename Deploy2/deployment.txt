@@ -1,0 +1,8 @@
+# create secret
+kubectl create secret generic mysql-pass --from-literal=password=YOUR_PASSWORD
+
+# deploy mysql
+kubectl create -f https://k8s.io/examples/application/wordpress/mysql-deployment.yaml
+
+# deploy wordpress
+kubectl create -f https://k8s.io/examples/application/wordpress/wordpress-deployment.yaml
