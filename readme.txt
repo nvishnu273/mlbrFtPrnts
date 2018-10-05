@@ -5,4 +5,4 @@ Malabar Footprints Web Site
 cd Deploy && sh ./deploy.sh
 
 
-minikube service wordpress --url
+minikube service mlbr-ft-prnts --url
