@@ -45,8 +45,9 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: wordpress:4.8-apache
+      - image: localhost:5000/wordpress-4.8
         name: mlbr-ft-prnts
+        imagePullPolicy: IfNotPresent
         env:
         - name: WORDPRESS_DB_HOST
           value: mlbr-ft-prnts-mysql
